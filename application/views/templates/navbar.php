@@ -274,7 +274,24 @@
                         <a href="javascript:;" data-toggle="collapse" data-target="#wcp">WCP<span style="float:right; padding-right:10px;font-size:14px">v</span></a>
                         <ul id="wcp" class="collapse">
                             <li>
-                                <a href="/Synchem/wcp/landing">View by Month</a>
+                                <a href="/wcp/landing">View by Month</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="javascript:;" data-toggle="collapse" data-target="#tp">TourPlanner<span style="float:right; padding-right:10px;font-size:14px">v</span></a>
+                        <ul id="tp" class="collapse">
+                            <li>
+                                <a href="/tp/show">View Tour plan</a>
+                            </li>
+                            <li>
+                                <a href="/tp/add">Add new Tour Plan</a>
+                            </li>
+                            <li>
+                                <a href="/tp/update">Update status of Tour plan</a>
+                            </li>
+                            <li>
+                                <a href="/tp/change">Change existing Tour plan</a>
                             </li>
                         </ul>
                     </li>
