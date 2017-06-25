@@ -9,15 +9,17 @@ class Calendar extends CI_Controller {
 			$data['dabu'] = "Dabu";
 			$data['year'] = $year;
 			$data['month'] = $month;
-			$data['editable'] = 'false';
-			$data['selectable'] = 'false';
-			$data['button_title'] = 'Tour plan';
+			$data['editable'] = $this->input->post('editable');
+			$data['selectable'] = $data['editable'];
+			$data['button_title'] = $this->input->post('button_title');
+			$data['function'] = 'submit()';
+			$data['json'] = $this->input->post('json');
 	        $this->load->helper('url');
 	        $this->load->view("tp/calendar/fullcalendar",$data);
 	}
 	public function index(){
-		$month = $this->input->get('month');
-		$year = $this->input->get('year');
+		$month = $this->input->post('month_index');
+		$year = $this->input->post('year');
 		$this->view($month,$year);
 	}
 }
