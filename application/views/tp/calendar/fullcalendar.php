@@ -97,7 +97,16 @@ var g_start;
 		// 			className: 'success'
 		// 		}
 		// 	];
-		var arr = [{"id":822017,"start":"2017-03-07T18:30:00.000Z","end":null,"title":"Meeting","allDay":true,"className":["info"]},{"id":1822017,"start":"2017-03-17T18:30:00.000Z","end":null,"title":"Meeting","allDay":true,"className":["info"]},{"id":1622017,"start":"2017-03-15T18:30:00.000Z","end":null,"title":"Meeting","allDay":true,"className":["info"]},{"id":1022017,"start":"2017-03-09T18:30:00.000Z","end":null,"title":"Meeting","allDay":true,"className":["info"]},{"id":2222017,"start":"2017-03-21T18:30:00.000Z","end":null,"title":"Meeting","allDay":true,"className":["info"]},{"id":2422017,"start":"2017-03-23T18:30:00.000Z","end":null,"title":"Meeting","allDay":true,"className":["info"]},{"id":132017,"start":"2017-03-31T18:30:00.000Z","end":null,"title":"Set :- 2","allDay":true,"className":["info"]}];
+		var arr = <?php if($json){echo $json;}else{echo "[]";} ?>;
+
+		for (var i = 0; i < arr.length; i++) {
+			var temp = arr[i]['start'];
+			var d = parseInt(temp.slice(8,10))+1;
+			d = d>0 && d<9 ? "0"+d : d;
+			arr[i]['start'] = temp.slice(0,8) + d + temp.slice(10,temp.length);
+			console.arr
+		}
+	
 	
 		/* initialize the calendar
 		-----------------------------------------------------------------*/
@@ -160,6 +169,8 @@ var g_start;
 		$('.fc-event-title').css('font-size', '1.65em');
 		$('.fc-event-title').css('color', '#000');
         $('.fc-header-center').html(button);
+        var loginform= document.getElementById("tempform");
+ 		loginform.style.display = "none";
    
 	});
 
@@ -177,6 +188,7 @@ var g_start;
 		$('#close').click();
 		if (title) {
 				window.calendar.fullCalendar( 'removeEvents', [parseInt(""+g_start.getDate()+g_start.getMonth()+g_start.getFullYear())]);
+				console.log(""+g_start.getDate()+g_start.getMonth()+g_start.getFullYear());
 				window.calendar.fullCalendar('renderEvent',
 					{	
 						id: parseInt(""+g_start.getDate()+g_start.getMonth()+g_start.getFullYear()),
@@ -194,6 +206,14 @@ var g_start;
 			window.calendar.fullCalendar('unselect');
 	}
 
+	function clear_event(){
+		//alert(23);
+		window.calendar.fullCalendar('removeEvents', [parseInt(""+g_start.getDate()+g_start.getMonth()+g_start.getFullYear())]);
+		$('.fc-event-title').css('font-size', '1.65em');
+		$('.fc-event-title').css('color', '#000');
+		$('#close').click();
+	}
+
 	function submit(){
 		var eventsFromCalendar = $('#calendar').fullCalendar('clientEvents');
         var eventsForCookie = [];
@@ -207,7 +227,15 @@ var g_start;
 	    	event.className = value.className;
 	        eventsForCookie.push(event);
 	    });             
-	    console.log(JSON.stringify(eventsForCookie));
+	    //console.log(JSON.stringify(eventsForCookie));
+	    $("#tour_plan").val(JSON.stringify(eventsForCookie));
+	    $("#tour_month").val("<?php echo $month; ?>");
+	    $("#tour_year").val("<?php echo $year; ?>");
+	    $("#status").val("0");
+	    $("#user_id").val("MSD1");
+	    var loginform= document.getElementById("tempform");
+ 		loginform.style.display = "none";
+ 		loginform.submit();
 	}
 
 
@@ -299,11 +327,19 @@ var g_start;
         <div class="modal-footer">
         	
         	<br>
+        	<button type="button" class="btn btn-primary pull-left" onclick="clear_event();">Clear Schedule</button>
        		<button type="button" class="btn btn-primary" onclick="fill(0);">Add</button>
             <button type="button" class="btn btn-default" id="close" data-dismiss="modal">Close</button>
         </div>
     </div>
 </div>
 </div>
+<form id="tempform" action="<?php echo base_url(); ?>tp/tourplan/add_plan" method="POST">
+<input type="text" id="user_id" name="user_id" />
+<input type="text" id="tour_month" name="tour_month" />
+<input type="text" id="tour_plan" name="tour_plan" />
+<input type="text" id="status" name="status" />
+<input type="text" id="tour_year" name="tour_year" />
+</form>
 </body>
 </html>
