@@ -51,63 +51,13 @@ var g_start;
 			
 		});
 		
-		// var arr = [
-		// 		{
-		// 			title: 'All Day Event',
-		// 			start: new Date(y, m, 1)
-		// 		},
-		// 		{
-		// 			id: 999,
-		// 			title: 'Repeating Event',
-		// 			start: new Date(y, m, d-3, 16, 0),
-		// 			allDay: false,
-		// 			className: 'info'
-		// 		},
-		// 		{
-		// 			id: 999,
-		// 			title: 'Repeating Event',
-		// 			start: new Date(y, m, d+4, 16, 0),
-		// 			allDay: false,
-		// 			className: 'info'
-		// 		},
-		// 		{
-		// 			title: 'Meeting',
-		// 			start: new Date(y, m, d, 10, 30),
-		// 			allDay: false,
-		// 			className: 'important'
-		// 		},
-		// 		{
-		// 			title: 'Lunch',
-		// 			start: new Date(y, m, d, 12, 0),
-		// 			end: new Date(y, m, d, 14, 0),
-		// 			allDay: false,
-		// 			className: 'important'
-		// 		},
-		// 		{
-		// 			title: 'Birthday Party',
-		// 			start: new Date(y, m, d+1, 19, 0),
-		// 			end: new Date(y, m, d+1, 22, 30),
-		// 			allDay: false,
-		// 		},
-		// 		{
-		// 			title: 'Click for Google',
-		// 			start: new Date(y, m, 28),
-		// 			end: new Date(y, m, 29),
-		// 			url: 'http://google.com/',
-		// 			className: 'success'
-		// 		}
-		// 	];
-		var arr = <?php if($json){echo $json;}else{echo "[]";} ?>;
 
-		for (var i = 0; i < arr.length; i++) {
-			var temp = arr[i]['start'];
-			var d = parseInt(temp.slice(8,10))+1;
-			d = d>0 && d<9 ? "0"+d : d;
-			arr[i]['start'] = temp.slice(0,8) + d + temp.slice(10,temp.length);
-			console.arr
+		var arr = <?php if($json){echo $json;}else{echo "[]";} ?>;
+		for (var i = 0 ; i < arr.length; i++) {
+			var re = /[0-9]{4}-([0-9]{2}|[0-9]{1})-([0-9]{2}|[0-9]{1})/g;
+			arr[i]['start'] = re.exec(arr[i]['id'])[0];
 		}
-	
-	
+
 		/* initialize the calendar
 		-----------------------------------------------------------------*/
 		
@@ -156,6 +106,9 @@ var g_start;
 	            // $('#modalTitle').html(event.title);
 	            // $('#modalBody').html(event.description);
 	            // $('#eventUrl').attr('href',event.url);
+	            if(start.getMonth() != <?php echo (int)$month; ?>){    // user can click only current month's dates
+	            	return;	
+	            }
 	            $('#calendarModal').modal();
 	            g_start = start;
 
@@ -166,13 +119,22 @@ var g_start;
 		});
 		
 		var button = '<span class="fc-button fc-button-month fc-state-default fc-corner-left fc-corner-right fc-state-active" onclick="<?php echo $function ?>;"><?php echo $button_title ?></span>';
-		$('.fc-event-title').css('font-size', '1.65em');
+		$('.fc-event-title').css('font-size', '1.2em');
 		$('.fc-event-title').css('color', '#000');
         $('.fc-header-center').html(button);
         var loginform= document.getElementById("tempform");
  		loginform.style.display = "none";
-   
+   		//$('.fc-day-number').css('color','#000');
 	});
+
+	function generate_id(g_start,role){
+		if(role == 'MR'){
+			return ""+g_start.getFullYear()+"-"+(1+g_start.getMonth())+"-"+g_start.getDate();	
+		}else{
+			return ""+g_start.getFullYear()+"-"+(1+g_start.getMonth())+"-"+g_start.getDate()+"-<?php echo $_SESSION['user_id']; ?>";
+		}
+	}
+
 
 	function fill(flag) {
 		var title;
@@ -180,18 +142,25 @@ var g_start;
 			title = 'Set :- ' + $('#plan').val(); //title = $('#plan').val();
 			if($('#plan').val() == ''){$('#plan').val('');$('#close').click();return;}
 		}else if(flag == 1){
-			title = 'Meeting';
+			if('<?php echo $_SESSION['role'] ?>' == 'MR'){
+				title = '<?php echo $_SESSION['user_id'].'-Meeting with RM'; ?>';
+			}else{
+				title = '<?php echo $_SESSION['user_id'].'-Meeting'; ?>';
+			}
+			
 		}else if(flag == 2){
-			title = 'Leave';
+			title = '<?php echo $_SESSION['user_id'];?>-Leave';
+		}
+		else if(flag == 3){
+			title = '<?php echo $_SESSION['user_id'];?>-Go with MR';
 		}
 		$('#plan').val('');
 		$('#close').click();
 		if (title) {
-				window.calendar.fullCalendar( 'removeEvents', [parseInt(""+g_start.getDate()+g_start.getMonth()+g_start.getFullYear())]);
-				console.log(""+g_start.getDate()+g_start.getMonth()+g_start.getFullYear());
+				window.calendar.fullCalendar( 'removeEvents', [generate_id(g_start,"<?php  echo $_SESSION['role']; ?>")]);
 				window.calendar.fullCalendar('renderEvent',
 					{	
-						id: parseInt(""+g_start.getDate()+g_start.getMonth()+g_start.getFullYear()),
+						id: generate_id(g_start,"<?php  echo $_SESSION['role']; ?>"),
 						title: title,
 						start: g_start,
 						end: g_start,
@@ -201,15 +170,15 @@ var g_start;
 					true
 				);
 			}
-			$('.fc-event-title').css('font-size', '1.65em');
+			$('.fc-event-title').css('font-size', '1.2em');
 			$('.fc-event-title').css('color', '#000');
 			window.calendar.fullCalendar('unselect');
 	}
 
 	function clear_event(){
 		//alert(23);
-		window.calendar.fullCalendar('removeEvents', [parseInt(""+g_start.getDate()+g_start.getMonth()+g_start.getFullYear())]);
-		$('.fc-event-title').css('font-size', '1.65em');
+		window.calendar.fullCalendar('removeEvents', [generate_id(g_start,"<?php  echo $_SESSION['role']; ?>")]);
+		$('.fc-event-title').css('font-size', '1.2em');
 		$('.fc-event-title').css('color', '#000');
 		$('#close').click();
 	}
@@ -220,7 +189,7 @@ var g_start;
 	    $.each(eventsFromCalendar, function(index,value) {
 	        var event = new Object();
 	        event.id = value.id;            
-	        event.start = value.start;
+	        event.start = value.id;//value.start;
 	        event.end = value.end;
 	        event.title = value.title;
 	    	event.allDay = value.allDay;
@@ -232,12 +201,11 @@ var g_start;
 	    $("#tour_month").val("<?php echo $month; ?>");
 	    $("#tour_year").val("<?php echo $year; ?>");
 	    $("#status").val("0");
-	    $("#user_id").val("MSD1");
+	    $("#user_id").val("<?php echo $user_id; ?>");
 	    var loginform= document.getElementById("tempform");
  		loginform.style.display = "none";
  		loginform.submit();
 	}
-
 
 
 </script>
@@ -320,10 +288,17 @@ var g_start;
             <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span> <span class="sr-only">close</span></button>
             <h4 id="modalTitle" class="modal-title"></h4>
         </div>
-        <div id="modalBody" class="modal-body">
+       
+        <?php if($_SESSION['role'] == 'MR'){ echo ' <div id="modalBody" class="modal-body">
         
-        <input type="number" placeholder="Set no. of doctors to visit" id="plan" name="plan" /> Or <button type="button" class="btn btn-primary" onclick="fill(1);">Meeting</button> Or <button type="button" class="btn btn-primary" onclick="fill(2);">Leave</button>
-         </div>
+        <input type="number" placeholder="Set no. of doctors to visit" id="plan" name="plan" /> Or <button type="button" class="btn btn-primary" onclick="fill(1);">Meeting with RM</button> Or <button type="button" class="btn btn-primary" onclick="fill(2);">Leave</button>
+         </div>';}else{ echo '<div id="modalBody" class="modal-body">
+        
+        <button type="button" class="btn btn-primary" onclick="fill(3);">Go with MR</button> Or <button type="button" class="btn btn-primary" onclick="fill(1);">Meeting</button> Or <button type="button" class="btn btn-primary" onclick="fill(2);">Leave</button>
+         </div>';
+         	} ?>
+
+
         <div class="modal-footer">
         	
         	<br>
@@ -334,7 +309,7 @@ var g_start;
     </div>
 </div>
 </div>
-<form id="tempform" action="<?php echo base_url(); ?>tp/tourplan/add_plan" method="POST">
+<form id="tempform" action="<?php echo base_url(); ?>tp/tourplan/<?php if($context == "submit"){echo "add_plan";}elseif($context == "change"){echo "change_plan";} ?>" method="POST">
 <input type="text" id="user_id" name="user_id" />
 <input type="text" id="tour_month" name="tour_month" />
 <input type="text" id="tour_plan" name="tour_plan" />

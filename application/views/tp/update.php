@@ -1,17 +1,15 @@
 
 <script src="<?php echo base_url(); ?>resources/js/angular.min.js"></script>
-<script type="text/javascript">
-var app = angular.module("synchem", []);
-</script>
-<div id="page-wrapper" ng-app="synchem">
 
-    <div class="container-fluid"  ng-controller="showtp">
+<div id="page-wrapper" >
+
+    <div class="container-fluid" >
 
         <!-- Page Heading -->
         <div class="row">
             <div class="col-lg-12">
                 <h1 class="page-header">
-                    View Tour plan
+                    Update status of Tour plan
                 </h1>
                 <ol class="breadcrumb">
                     <li>
@@ -21,7 +19,7 @@ var app = angular.module("synchem", []);
                         <a href="./landing">TourPlanner</a>
                     </li>
                     <li class="active">
-                        <i class="fa fa-edit"></i> View Tour plan
+                        <i class="fa fa-edit"></i> Update status of Tour plan
                     </li>
                 </ol>
             </div>
@@ -29,14 +27,14 @@ var app = angular.module("synchem", []);
 
         <div class="row">
             <div class="col-lg-12">
-                <form action="tourplan" method="POST">
-                   <div class="form-group">
-                        <?php if($_SESSION['role'] != 'MR'){
+                <form action="tourplan/update" method="POST">
+                 <?php if($_SESSION['role'] != 'MR'){
                             echo "<div class='form-group'>
                                   <label for='user_id'>User ID of the MR:- </label>
                                   <input type='text' class='form-control' id='user_id' name='user_id'>
                                 </div>";
                             } ?>
+                   <div class="form-group">
                       <label for="month">Month:</label>
                       <input type="text" class="form-control" id="month" name="month">
                     </div>
@@ -44,7 +42,7 @@ var app = angular.module("synchem", []);
                       <label for="pwd">Year:</label>
                       <input type="text" class="form-control" id="year" name="year">
                     </div>
-                    <button href="change" class="btn btn-primary">Show</button>
+                    <button class="btn btn-primary">Proceed to see the tour plan</button>
                 </form>
             </div> 
         </div>

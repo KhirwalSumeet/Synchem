@@ -1,3 +1,8 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Error</title>
+</head>
 <style type="text/css">
     body {
         margin-top: 40px;
@@ -7,4 +12,10 @@
         background-color: #DDDDDD;
         }
 </style>
-<h4><?php echo $msg; ?></h4>
+<body>
+<h4><?php echo $error_msg; ?></h4>
+
+</body>
+</html>
+
+
