@@ -3,10 +3,11 @@
  $(document).ready(function(){
     $('#month_index').val("<?php echo $month_index; ?>");
     $('#year').val("<?php echo $year; ?>");
-    $('#editable').val("<?php echo $editable; ?>")
-    $('#button_title').val("<?php echo $button_title; ?>")
-    $('#user_id').val("<?php echo $user_id; ?>")
-    $('#role').val("<?php echo $_SESSION['role'] ?>")
+    $('#editable').val("<?php echo $editable; ?>");
+    $('#button_title').val("<?php echo $button_title; ?>");
+    $('#user_id').val("<?php echo $user_id; ?>");
+    $('#role').val("<?php echo $_SESSION['role'] ?>");
+    $('#sets').val('<?php echo $sets; ?>');
     <?php 
     if(!($page_header == "Add new Tour plan")){
         echo "$('#json').val($json);";
@@ -83,6 +84,7 @@ function submit(option) {
          <input type="text" id="json" name="json" />
          <input type="text" id="user_id" name="user_id" />
          <input type="text" id="role" name="role" />
+         <input type="text" id="sets" name="sets" />
         </form>
 
         <div class="embed-responsive embed-responsive-4by3">

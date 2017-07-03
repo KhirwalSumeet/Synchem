@@ -30,6 +30,7 @@ class Calendar extends CI_Controller {
 			}else{
 			 	$data['user_id'] = $_SESSION['user_id'];
 			}
+			$data['sets'] = $this->input->post('sets');
 	        $this->load->helper('url');
 	        $this->load->view("tp/calendar/fullcalendar",$data);
 	}

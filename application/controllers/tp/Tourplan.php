@@ -27,6 +27,11 @@ class Tourplan extends CI_Controller {
 			}else{
 				$data['user_id'] = "" ;
 			}
+			if($_SESSION['role'] == 'MR'){
+				$data['sets'] = $this->get_sets();
+			}else{
+				$data['sets'] ='';
+			}
 			
 	        $data['title'] = $data['month']."-".$data['year']." | ".ucfirst($page) ; // Capitalize the first letter
 	        $this->load->helper('url');
@@ -143,6 +148,15 @@ class Tourplan extends CI_Controller {
 			$data['msg'] = "Tour plan succesfully added";
 	        $this->load->view("tp/success",$data);
 		}
+	}
+
+	public function get_sets(){
+		$user_id = $_SESSION['user_id'];
+		$ch = curl_init("http://localhost:5000/test/get_sets?user_id=".$user_id);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$response = curl_exec($ch);
+		curl_close($ch);
+		return json_encode((json_decode($response,TRUE)['data']));
 	}
 
 }

@@ -125,6 +125,10 @@ var g_start;
         var loginform= document.getElementById("tempform");
  		loginform.style.display = "none";
    		//$('.fc-day-number').css('color','#000');
+
+
+
+
 	});
 
 	function generate_id(g_start,role){
@@ -139,8 +143,8 @@ var g_start;
 	function fill(flag) {
 		var title;
 		if(flag == 0){
-			title = 'Set :- ' + $('#plan').val(); //title = $('#plan').val();
-			if($('#plan').val() == ''){$('#plan').val('');$('#close').click();return;}
+			title = 'Set :- ' + $('#sel1').val(); //title = $('#plan').val();
+			if($('#plan').val() == ''){$('#sel1').val('');$('#close').click();return;}
 		}else if(flag == 1){
 			if('<?php echo $_SESSION['role'] ?>' == 'MR'){
 				title = '<?php echo $_SESSION['user_id'].'-Meeting with RM'; ?>';
@@ -290,8 +294,12 @@ var g_start;
         </div>
        
         <?php if($_SESSION['role'] == 'MR'){ echo ' <div id="modalBody" class="modal-body">
-        
-        <input type="number" placeholder="Set no. of doctors to visit" id="plan" name="plan" /> Or <button type="button" class="btn btn-primary" onclick="fill(1);">Meeting with RM</button> Or <button type="button" class="btn btn-primary" onclick="fill(2);">Leave</button>
+         <label for="sel1">Select Set No. of the doctors:</label>
+        <select class="form-control" id="sel1">';
+		   for ($i=0; $i < sizeof(json_decode($sets,TRUE)); $i++) { 
+		   		echo "<option>".json_decode($sets,TRUE)[$i]['set_no']."</option> ";
+		   }
+  echo '</select> Or <button type="button" class="btn btn-primary" onclick="fill(1);">Meeting with RM</button> Or <button type="button" class="btn btn-primary" onclick="fill(2);">Leave</button>
          </div>';}else{ echo '<div id="modalBody" class="modal-body">
         
         <button type="button" class="btn btn-primary" onclick="fill(3);">Go with MR</button> Or <button type="button" class="btn btn-primary" onclick="fill(1);">Meeting</button> Or <button type="button" class="btn btn-primary" onclick="fill(2);">Leave</button>
