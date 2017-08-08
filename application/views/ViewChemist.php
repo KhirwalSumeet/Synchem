@@ -66,7 +66,7 @@ app.controller("viewchemist", function($scope) {
     $.ajax
     ({
           type: "GET",
-          url: "http://localhost/Pharma/index.php/Chemist/info/",
+          url: "/Pharma/index.php/Chemist/info/",
           dataType: 'json',
           async: false,
           headers: {

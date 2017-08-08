@@ -201,7 +201,7 @@
                                 $data=json_decode($data,true);
                                 $i=0;
                                 $authorization= "Authorization: Bearer ".$_SESSION['access_token'];
-                                $url = "http://localhost/Pharma/index.php/MR/set";
+                                $url = "/Pharma/index.php/MR/set";
 
                                 //open connection
                                 $ch = curl_init();
@@ -249,7 +249,7 @@
                                 $i=0;
 
                                 $authorization= "Authorization: Bearer ".$_SESSION['access_token'];
-                                $url = "http://localhost/Pharma/index.php/Chemist/info";
+                                $url = "/Pharma/index.php/Chemist/info";
 
                                 //open connection
                                 $ch = curl_init();

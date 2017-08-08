@@ -5,6 +5,7 @@ require_once(APPPATH."helpers/api/postrequest.php");
 class MR extends CI_Controller {
 
 	public function index(){
+		
 		$url="http://localhost/Pharma/MR/add/";
         $fields = array(
         	"device" => urlencode("web"),

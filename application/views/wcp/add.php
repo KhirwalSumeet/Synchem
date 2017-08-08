@@ -103,7 +103,7 @@ var app = angular.module("synchem", []);
             $.ajax
             ({
                 type: "GET",
-                url: "http://localhost/Pharma/doctor/profiles",
+                url: "/Pharma/doctor/profiles",
                 dataType: 'json',
                 async: true,
                 headers: {
@@ -120,7 +120,7 @@ var app = angular.module("synchem", []);
             $.ajax
             ({
                 type: "GET",
-                url: "http://localhost/Pharma/products/activelist",
+                url: "/Pharma/products/activelist",
                 dataType: 'json',
                 async: true,
                 headers: {
@@ -135,8 +135,9 @@ var app = angular.module("synchem", []);
         }
         $scope.submit=function(){
             mydata=fetchdata();
+            console.log(mydata)
             $.ajax({
-                url:'http://localhost/Pharma/WCP/addWCP',
+                url:'/Pharma/WCP/addWCP',
                 data: JSON.stringify(mydata),
                 type: 'POST',
                 processData: false,
@@ -146,8 +147,8 @@ var app = angular.module("synchem", []);
                 },
                 success: function (data){
                     $scope.message=data["msg"];
-                    if(data["status"]==200){
-                        window.location.assign(view);
+                    if(data["status_code"]==200){
+                        window.location.assign('manage?msg=WCP Added Succesfully');
                     }
                 }
             });
@@ -157,49 +158,65 @@ var app = angular.module("synchem", []);
             id=$scope.doctorList[0]["doc_id"];
             mydata=[];
             WCPList=[];
+            type = [];
+            smpu = [];
+            productData = [];
+            pid = [];
+            slpu = [];
             $(".type").each(function() {
-                mydata.push($(this).val());
+                type.push($(this).val());
             });
             $(".product1").each(function() {
-                mydata.push($(this).val());
+                productData.push($(this).val());
             });
             $(".sample_plan_unit1").each(function() {
-                mydata.push($(this).val());
+                smpu.push($(this).val());
             });
             $(".sale_plan_unit1").each(function() {
-                mydata.push($(this).val());
+                slpu.push($(this).val());
+            });
+            $(".pid1").each(function() {
+                pid.push($(this).val());
             });
 
             $(".product2").each(function() {
-                mydata.push($(this).val());
+                productData.push($(this).val());
             });
             $(".sample_plan_unit2").each(function() {
-                mydata.push($(this).val());
+                smpu.push($(this).val());
             });
             $(".sale_plan_unit2").each(function() {
-                mydata.push($(this).val());
+                slpu.push($(this).val());
+            });
+            $(".pid2").each(function() {
+                pid.push($(this).val());
             });
 
             $(".product3").each(function() {
-                mydata.push($(this).val());
+                productData.push($(this).val());
             });
             $(".sample_plan_unit3").each(function() {
-                mydata.push($(this).val());
+                smpu.push($(this).val());
             });
             $(".sale_plan_unit3").each(function() {
-                mydata.push($(this).val());
+                slpu.push($(this).val());
             });
+            $(".pid3").each(function() {
+                pid.push($(this).val());
+            });
+            var indexCount = $scope.doctorList.length;
             for(i=0;i<$scope.doctorList.length;i++){
                 obj={};
-                obj["type"]=mydata[i];
+                obj["type"]=type[i];
                 obj["DOT"]="MR";
                 obj["doc_id"]=$scope.doctorList[i]["doc_id"];
                 var productList=[];
                 for(j=0;j<3;j++){
                     product={};
-                    product["product_id"]=mydata[(2*(3*j+1))+i];
-                    product["sample_plan_unit"]=mydata[(2*(3*j+1))+2+i];
-                    product["sale_plan_unit"]=mydata[(2*(3*j+1))+4+i];
+                    product["product_id"]=productData[i+indexCount*j];
+                    product["sample_plan_unit"]=smpu[i+indexCount*j];
+                    product["sale_plan_unit"]=slpu[i+indexCount*j];
+                    product["p_id"]=pid[i+indexCount*j]
                     productList.push(product);
                 }
                 obj["productList"]=productList;
