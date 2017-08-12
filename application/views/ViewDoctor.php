@@ -67,7 +67,7 @@ app.controller("viewdoctor", function($scope) {
     $.ajax
     ({
           type: "GET",
-          url: "http://localhost/Pharma/index.php/Doctor/info/",
+          url: "<?php echo base_url(); ?>t/Pharma/index.php/Doctor/info/",
           dataType: 'json',
           async: false,
           headers: {

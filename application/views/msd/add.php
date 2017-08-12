@@ -90,7 +90,7 @@
                     $.ajax
                     ({
                           type: "GET",
-                          url: "http://localhost/Pharma/Person/unassigned",
+                          url: "/Pharma/Person/unassigned",
                           dataType: 'json',
                           async: true,
                           headers: {

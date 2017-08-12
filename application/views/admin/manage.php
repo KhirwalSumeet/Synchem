@@ -117,7 +117,7 @@ var app = angular.module("synchem", []);
                     $.ajax
                     ({
                           type: "GET",
-                          url: "http://localhost/Pharma/Person/info/person_id/"+id,
+                          url: "/Pharma/Person/info/person_id/"+id,
                           dataType: 'json',
                           async: true,
                           headers: {
@@ -143,7 +143,7 @@ var app = angular.module("synchem", []);
             $.ajax
             ({
                   type: "GET",
-                  url: "http://localhost/Pharma/"+$scope.profile+"/profiles/",
+                  url: "/Pharma/"+$scope.profile+"/profiles/",
                   dataType: 'json',
                   async: true,
                   headers: {
@@ -173,7 +173,7 @@ var app = angular.module("synchem", []);
             $.ajax
             ({
                   type: "GET",
-                  url: "http://localhost/Pharma/Person/unassigned",
+                  url: "/Pharma/Person/unassigned",
                   dataType: 'json',
                   async: true,
                   headers: {
@@ -190,7 +190,7 @@ var app = angular.module("synchem", []);
                     $.ajax
                     ({
                           type: "POST",
-                          url: "http://localhost/Pharma/"+$scope.profile+"/edit",
+                          url: "/Pharma/"+$scope.profile+"/edit",
                           dataType: 'json',
                           async: false,
                           data: { "user_id": $scope.user, "HQ": $scope.hq, "person_id": $scope.person, "head_id": "DUMMY"},

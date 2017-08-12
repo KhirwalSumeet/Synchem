@@ -120,7 +120,7 @@ var app = angular.module("synchem", []);
             $.ajax
             ({
                   type: "GET",
-                  url: "http://localhost/Pharma/index.php/MR/Set",
+                  url: "/Pharma/index.php/MR/Set",
                   dataType: 'json',
                   async: true,
                   headers: {
@@ -148,7 +148,7 @@ var app = angular.module("synchem", []);
                     $.ajax
                     ({
                           type: "POST",
-                          url: "http://localhost/Pharma/",
+                          url: "/Pharma/",
                           dataType: 'json',
                           async: false,
                           data: { "id": $scope.id, "name": $scope.name, "description": $scope.desc, "in_practice": $sscope.inp, "price": $scope.price },

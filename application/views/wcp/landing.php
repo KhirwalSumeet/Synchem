@@ -11,7 +11,7 @@ var app = angular.module("synchem", []);
                 <div class="row">
                     <div class="col-lg-12">
                         <h1 class="page-header">
-                            Get WCP Details
+                            Add WCP
                         </h1>
                         <ol class="breadcrumb">
                             <li>
@@ -71,7 +71,7 @@ var app = angular.module("synchem", []);
             $.ajax
             ({
                   type: "POST",
-                  url: "http://localhost/Pharma/WCP/permissionadd",
+                  url: "/Pharma/WCP/permissionadd",
                   dataType: 'json',
                   async: true,
                   headers: {
@@ -82,11 +82,8 @@ var app = angular.module("synchem", []);
                     $scope.message=data["msg"];
                     $scope.$apply();
                     if(data["status"]){
-
                         window.location.assign("add?month="+$scope.month+"&&year="+$scope.year);
                     }
-                        // window.location.assign("add?month="+$scope.month+"&&year="+$scope.year);
-                    console.log(data);
                   }
             });
         }

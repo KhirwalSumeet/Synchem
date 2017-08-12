@@ -75,7 +75,7 @@
                     $.ajax
                     ({
                           type: "GET",
-                          url: "http://localhost/Pharma/index.php/MR/Set",
+                          url: "/Pharma/index.php/MR/Set",
                           dataType: 'json',
                           async: true,
                           headers: {
@@ -95,7 +95,7 @@
                     $.ajax
                     ({
                           type: "POST",
-                          url: "http://localhost/Pharma/index.php/MR/Set",
+                          url: "/Pharma/index.php/MR/Set",
                           dataType: 'json',
                           async: false,
                           data: { "set_no":set_no, "station_name":station_name},

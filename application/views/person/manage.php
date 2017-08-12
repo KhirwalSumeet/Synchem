@@ -184,7 +184,7 @@ var app = angular.module("synchem", []);
                     $.ajax
                     ({
                           type: "GET",
-                          url: "http://localhost/Pharma/Person/info/person_id/"+id,
+                          url: "/Pharma/Person/info/person_id/"+id,
                           dataType: 'json',
                           async: true,
                           headers: {
@@ -210,7 +210,7 @@ var app = angular.module("synchem", []);
             $.ajax
             ({
                   type: "GET",
-                  url: "http://localhost/Pharma/Person/profiles/",
+                  url: "/Pharma/Person/profiles/",
                   dataType: 'json',
                   async: true,
                   headers: {
@@ -238,7 +238,7 @@ var app = angular.module("synchem", []);
                     $.ajax
                     ({
                           type: "POST",
-                          url: "http://localhost/Pharma/Person/edit",
+                          url: "/Pharma/Person/edit",
                           dataType: 'json',
                           async: false,
                           data: { "person_id": $scope.id, "name": $scope.name, "phone": $scope.phone, "email": $scope.email,"DOB":$scope.dob, "sex": $scope.sex},
@@ -265,7 +265,7 @@ var app = angular.module("synchem", []);
             $.ajax
             ({
                   type: "POST",
-                  url: "http://localhost/Pharma/Person/passwordchange",
+                  url: "/Pharma/Person/passwordchange",
                   dataType: 'json',
                   async: false,
                   data: { "person_id": $scope.passid, "password": $scope.adminpass, "new_password": $scope.newpass},

@@ -64,7 +64,7 @@
                     $.ajax
                     ({
                           type: "GET",
-                          url: "http://localhost/Pharma/Admin/myhierarchy",
+                          url: "/Pharma/Admin/myhierarchy",
                           dataType: 'json',
                           async: true,
                           headers: {
