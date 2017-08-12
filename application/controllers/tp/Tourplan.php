@@ -42,19 +42,25 @@ class Tourplan extends CI_Controller {
 	}
 
 	public function get_plan($user_id,$tour_month,$tour_year){
-		$url = "http://localhost:5000/test/get_tour";
+		$url = "http://localhost:5000/tourplanner/get_tour_details";
 		$url = $url."?"."user_id=".$user_id."&"."tour_month=".$tour_month."&"."tour_year=".$tour_year;
 		$authorization = "Bearer ".$_SESSION['access_token'];
 		$person_id = $_SESSION['user_id'];
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array('person_id: '.$_SESSION['person_id'] , "Authorization: ".$authorization ));
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array("Authorization: ".$authorization, 'person_id: '.$_SESSION['person_id']));
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		//curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$response = curl_exec($ch);
 		curl_close($ch);
-		return $response;
+		if(isset(json_decode($response)->data[0])){
+			return json_encode(json_decode($response)->data[0]->tour_plan);	
+		}
+		else{
+			return "";
+		}
+		
 	}
 
 	public function index(){   // default for view
@@ -86,15 +92,21 @@ class Tourplan extends CI_Controller {
 			'tour_year' => $tour_year,
 		];
 
-		$ch = curl_init("http://localhost:5000/test/change_tour");
+		$ch = curl_init("http://localhost:5000/tourplanner/change_tour_plan");
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+		$authorization = "Bearer ".$_SESSION['access_token'];
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array("Authorization: ".$authorization, 'person_id: '.$_SESSION['person_id']));
 		//curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$response = curl_exec($ch);
 		curl_close($ch);
-		if(1){
+		if(json_decode($response)->status_code != 401){
 			$data['msg'] = "Tour plan succesfully changed";
 	        $this->load->view("tp/success",$data);
+		}
+		else{
+			$data['error_msg'] = "Error occured";
+	        $this->load->view("tp/error",$data);	
 		}
 	}
 
@@ -111,15 +123,21 @@ class Tourplan extends CI_Controller {
 			'tour_year' => $tour_year,
 		];
 
-		$ch = curl_init("http://localhost:5000/test/update_status");
+		$ch = curl_init("http://localhost:5000/tourplanner/update_status");
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+		$authorization = "Bearer ".$_SESSION['access_token'];
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array("Authorization: ".$authorization, 'person_id: '.$_SESSION['person_id']));
 		//curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$response = curl_exec($ch);
 		curl_close($ch);
-		if(1){
-			$data['msg'] = "Tour plan status succesfully updated";
+		if(json_decode($response)->status_code != 401){
+			$data['msg'] = "Tour plan status succesfully added";
 	        $this->load->view("tp/success",$data);
+		}
+		else{
+			$data['error_msg'] = "Error occured";
+	        $this->load->view("tp/error",$data);	
 		}
 	}
 
@@ -138,22 +156,30 @@ class Tourplan extends CI_Controller {
 			'status' => $status,
 		];
 
-		$ch = curl_init("http://localhost:5000/test/set_tour");
+		$ch = curl_init("http://localhost:5000/tourplanner/set_tour_details");
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
+		$authorization = "Bearer ".$_SESSION['access_token'];
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array("Authorization: ".$authorization, 'person_id: '.$_SESSION['person_id']));
 		//curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 		$response = curl_exec($ch);
 		curl_close($ch);
-		if(1){
+		if(json_decode($response)->status_code != 401){
 			$data['msg'] = "Tour plan succesfully added";
 	        $this->load->view("tp/success",$data);
+		}
+		else{
+			$data['error_msg'] = "Error occured";
+	        $this->load->view("tp/error",$data);	
 		}
 	}
 
 	public function get_sets(){
 		$user_id = $_SESSION['user_id'];
-		$ch = curl_init("http://localhost:5000/test/get_sets?user_id=".$user_id);
+		$ch = curl_init("http://localhost:5000/sets/list?user_id=".$user_id);
+		$authorization = "Bearer ".$_SESSION['access_token'];
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array('person_id : '.$_SESSION['person_id'] , "Authorization : ".$authorization ));
 		$response = curl_exec($ch);
 		curl_close($ch);
 		return json_encode((json_decode($response,TRUE)['data']));
